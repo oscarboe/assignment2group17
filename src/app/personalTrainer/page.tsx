@@ -95,21 +95,13 @@ const personalTrainer = () => {
 
     getUsers();
     getWorkOuts();
-
-    const x: workoutProgram = {
-      description: '',
-      exercises: [],
-      personalTrainerId: 0,
-      clientId: 0,
-    };
-
-    setWorkOutOnId(x);
   }, []);
 
   const getWorkOutOnId = async (workoutProgramId: number) => {
-    const apiUrl =
-      'https://afefitness2023.azurewebsites.net/api/WorkoutPrograms';
-
+    const apiUrl = new URL(
+      `https://afefitness2023.azurewebsites.net/api/WorkoutPrograms/${workoutProgramId}`
+    );
+    console.log(apiUrl);
     // Replace 'YOUR_ACCESS_TOKEN' with your actual authorization token
     const accessToken =
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJOYW1lIjoiU3VwZXJtYW4iLCJSb2xlIjoiUGVyc29uYWxUcmFpbmVyIiwiVXNlcklkIjoiMiIsIm5iZiI6IjE3MDE2MzAxNDciLCJleHAiOiIxNzAxNzE2NTQ3In0.IXDIIdizeUqFHs_yv4kFQ4lt0MLdxPT1uiAHh3okXmc';
@@ -121,9 +113,6 @@ const personalTrainer = () => {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${accessToken}`,
         },
-        body: JSON.stringify({
-          WorkoutProgramId: workoutProgramId,
-        }),
       });
 
       if (!response.ok) {
@@ -189,6 +178,7 @@ const personalTrainer = () => {
       <ul>
         {workOuts.map((workOut) => (
           <li key={workOut.workoutProgramId}>
+            {workOut.workoutProgramId}
             {workOut.name}
             {workOut.description}
             {workOut.exercises.map((exercise) => (
@@ -209,21 +199,23 @@ const personalTrainer = () => {
           workoutProgramId:
           <input type='number' name='workoutProgramId' />
         </label>
-        <button type='submit'>Create</button>
+        <button type='submit'>See workout program</button>
       </form>
-      <li key={workOutOnId!.workoutProgramId}>
-        {workOutOnId.name}
-        {workOutOnId.description}
-        {workOutOnId!.exercises.map((exercise) => (
-          <li key={exercise.exerciseId}>
-            {exercise.name}
-            {exercise.description}
-            {exercise.sets}
-            {exercise.repetitions}
-            {exercise.time}
-          </li>
-        ))}
-      </li>
+      <ul>
+        <li key={workOutOnId?.workoutProgramId}>
+          {workOutOnId?.name}
+          {workOutOnId?.description}
+          {workOutOnId?.exercises.map((exercise) => (
+            <li key={exercise.exerciseId}>
+              {exercise.name}
+              {exercise.description}
+              {exercise.sets}
+              {exercise.repetitions}
+              {exercise.time}
+            </li>
+          ))}
+        </li>
+      </ul>
     </div>
   );
 };
