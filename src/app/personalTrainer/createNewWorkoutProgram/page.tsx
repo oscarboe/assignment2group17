@@ -1,21 +1,13 @@
 'use client';
 import Link from 'next/link';
-import { Exercise } from '../page';
+import { Exercise, workoutProgram } from '../page';
 
-type workoutProgram = {
-  workoutProgramId: number;
-  name: string;
-  description: string;
-  exercises: Exercise;
-  personalTrainerId: number;
-  clientId: number;
-};
-
-const createUser = async (_workoutProgram: workoutProgram) => {
+const createWorkoutProgram = async (_workoutProgram: workoutProgram) => {
   const apiUrl = 'https://afefitness2023.azurewebsites.net/api/Users';
 
   // Replace 'YOUR_ACCESS_TOKEN' with your actual authorization token
-  const accessToken = 'YOUR_ACCESS_TOKEN';
+  const accessToken =
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJOYW1lIjoiU3VwZXJtYW4iLCJSb2xlIjoiUGVyc29uYWxUcmFpbmVyIiwiVXNlcklkIjoiMiIsIm5iZiI6IjE3MDE2MzAxNDciLCJleHAiOiIxNzAxNzE2NTQ3In0.IXDIIdizeUqFHs_yv4kFQ4lt0MLdxPT1uiAHh3okXmc';
 
   try {
     const response = await fetch(apiUrl, {
@@ -50,32 +42,35 @@ const handleSubmit = async (event: any) => {
   const formData = new FormData(event.target);
   const exercise: Exercise = {
     exerciseId: parseInt(formData?.get('exerciseId')?.toString()!),
-    name: 'string',
-    description: 'string',
-    sets: undefined,
-    repetitions: undefined,
-    time: 'string',
-    workoutProgramId: undefined,
-    personalTrainerId: undefined,
+    name: formData.get('exName')?.toString()!,
+    description: formData.get('exDescription')?.toString()!,
+    sets: parseInt(formData?.get('sets')?.toString()!),
+    repetitions: parseInt(formData?.get('repetitions')?.toString()!),
+    time: formData.get('time')?.toString()!,
+    workoutProgramId: parseInt(formData?.get('workoutProgramId')?.toString()!),
+    personalTrainerId: parseInt(
+      formData?.get('personalTrainerId')?.toString()!
+    ),
   };
-
+  var exerciseList: Exercise[] = [];
+  exerciseList.push(exercise);
   const _workoutProgram: workoutProgram = {
     workoutProgramId: parseInt(formData?.get('workoutProgramId')?.toString()!),
     name: formData.get('name')?.toString()!,
     description: formData.get('description')?.toString()!,
-    exercises: exercise,
+    exercises: exerciseList,
     personalTrainerId: parseInt(
       formData?.get('personalTrainerId')?.toString()!
     ),
     clientId: parseInt(formData?.get('clientId')?.toString()!),
   };
   if (
-    user.password != null &&
-    user.email != null &&
-    user.password.length > 0 &&
-    user.email.length > 0
+    _workoutProgram.exercises != null &&
+    _workoutProgram.workoutProgramId != null &&
+    _workoutProgram.exercises[0].name.length > 0 &&
+    _workoutProgram.workoutProgramId >= 0
   ) {
-    const TOKEN = createUser(user);
+    const TOKEN = createWorkoutProgram(_workoutProgram);
     // router.push('TrainerAllExercises');
     // router.refresh();
   } else alert('failed creating user');
@@ -94,25 +89,50 @@ export default async function createNewWorkoutProgram() {
       </h2>
       <form onSubmit={handleSubmit}>
         <label>
-          firstName:
-          <input type='text' name='firstName' />
+          workoutProgramId:
+          <input type='number' name='workoutProgramId' />
         </label>
         <label>
-          lastName:
-          <input type='text' name='lastName' />
+          Workout program name:
+          <input type='text' name='name' />
         </label>
         <label>
-          email:
-          <input type='text' name='email' />
+          description:
+          <input type='text' name='description' />
         </label>
         <label>
-          Password:
-          <input type='password' name='password' />
+          clientId:
+          <input type='number' name='clientId' />
         </label>
         <label>
           personalTrainerId:
           <input type='number' name='personalTrainerId' />
         </label>
+        <label>
+          exerciseId:
+          <input type='number' name='exerciseId' />
+        </label>
+        <label>
+          Exercise name:
+          <input type='text' name='exname' />
+        </label>
+        <label>
+          Exercise description:
+          <input type='text' name='exDescription' />
+        </label>
+        <label>
+          sets:
+          <input type='number' name='sets' />
+        </label>
+        <label>
+          repetitions:
+          <input type='number' name='repetitions' />
+        </label>
+        <label>
+          time:
+          <input type='text' name='time' />
+        </label>
+
         <button type='submit'>Create</button>
       </form>
     </div>

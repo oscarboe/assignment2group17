@@ -1,19 +1,13 @@
 'use client';
 import Link from 'next/link';
-
-type User = {
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-  personalTrainerId: number;
-};
+import { User } from '../page';
 
 const createUser = async (user: User) => {
   const apiUrl = 'https://afefitness2023.azurewebsites.net/api/Users';
 
   // Replace 'YOUR_ACCESS_TOKEN' with your actual authorization token
-  const accessToken = 'YOUR_ACCESS_TOKEN';
+  const accessToken =
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJOYW1lIjoiU3VwZXJtYW4iLCJSb2xlIjoiUGVyc29uYWxUcmFpbmVyIiwiVXNlcklkIjoiMiIsIm5iZiI6IjE3MDE2MzAxNDciLCJleHAiOiIxNzAxNzE2NTQ3In0.IXDIIdizeUqFHs_yv4kFQ4lt0MLdxPT1uiAHh3okXmc';
 
   try {
     const response = await fetch(apiUrl, {
@@ -47,6 +41,7 @@ const handleSubmit = async (event: any) => {
   event.preventDefault();
   const formData = new FormData(event.target);
   const user: User = {
+    userId: parseInt(formData?.get('personalTrainerId')?.toString()!),
     firstName: formData.get('firstName')?.toString()!,
     lastName: formData.get('lastName')?.toString()!,
     email: formData.get('email')?.toString()!,
@@ -79,6 +74,10 @@ export default async function AddClient() {
         <Link href='/personalTrainer'> Back </Link>{' '}
       </h2>
       <form onSubmit={handleSubmit}>
+        <label>
+          userId:
+          <input type='number' name='userId' />
+        </label>
         <label>
           firstName:
           <input type='text' name='firstName' />
