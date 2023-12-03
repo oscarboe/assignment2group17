@@ -1,18 +1,17 @@
 import Link from 'next/link';
 
-type Exercise = {
-  exerciseId: Int16Array;
+export type Exercise = {
+  exerciseId: number;
   name: 'string';
   description: 'string';
-  sets: Int16Array;
-  repetitions: Int16Array;
+  sets: number;
+  repetitions: number;
   time: 'string';
-  workoutProgramId: Int16Array;
-  personalTrainerId: Int16Array;
+  workoutProgramId: number;
+  personalTrainerId: number;
 };
 
-const fetchData = async () => {
-  // Replace 'YOUR_API_ENDPOINT' with the actual API endpoint you want to call
+const fetcUnsasignedExercises = async () => {
   const apiUrl =
     'https://afefitness2023.azurewebsites.net/api/Exercises/unassigned';
 
@@ -21,12 +20,11 @@ const fetchData = async () => {
 
   try {
     const response = await fetch(apiUrl, {
-      method: 'GET', // or 'POST' or any other HTTP method
+      method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Basic ${btoa('username:password')}`,
+        Authorization: `Bearer ${accessToken}`,
       },
-      body: 'grant_type=password&username=boss@fitness.moon&password=asdfQWER',
     });
 
     if (!response.ok) {
@@ -41,8 +39,7 @@ const fetchData = async () => {
   }
 };
 
-const fpost = async (exerciseData: any) => {
-  // Replace 'YOUR_API_ENDPOINT' with the actual API endpoint you want to call
+const fpost = async (exerciseData: Exercise) => {
   const apiUrl = 'https://afefitness2023.azurewebsites.net/api/Exercises';
 
   // Replace 'YOUR_ACCESS_TOKEN' with your actual authorization token
@@ -50,12 +47,21 @@ const fpost = async (exerciseData: any) => {
 
   try {
     const response = await fetch(apiUrl, {
-      method: 'POST', // or 'POST' or any other HTTP method
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Basic ${btoa('username:password')}`,
+        Authorization: `Bearer ${accessToken}`,
       },
-      body: 'grant_type=password&username=boss@fitness.moon&password=asdfQWER&${JSON.stringify(exerciseData)}',
+      body: JSON.stringify({
+        exerciseId: exerciseData.exerciseId,
+        name: exerciseData.name,
+        description: exerciseData.description,
+        sets: exerciseData.sets,
+        repetitions: exerciseData.repetitions,
+        time: exerciseData.time,
+        workoutProgramId: exerciseData.workoutProgramId,
+        personalTrainerId: exerciseData.personalTrainerId,
+      }),
     });
 
     if (!response.ok) {
@@ -80,10 +86,7 @@ async function getAllExercisesUsed() {
 }
 
 export default async function TrainerPage() {
-  // const exercisesUsed = await getAllExercisesUsed();
-  // fpost(exercise)2;
   // const exercisesUsed = await fetchData();
-  // console.log('hi');
   // console.log(exercisesUsed);
   return (
     <div>
@@ -91,17 +94,21 @@ export default async function TrainerPage() {
         {' '}
         <Link href='/'> Home </Link>{' '}
       </h2>
+      <h2>
+        {' '}
+        <Link href='/personalTrainer/addclient'> Add client </Link>{' '}
+      </h2>
       <h1>Exercises in use:</h1>
       <div>
         {/* {exercisesUsed?.map((exercise: any) => {
-          return <Exercise key={exercise.exerciseId} exercise={exercise} />;
+          return <ExerciseFunc key={exercise.exerciseId} exercise={exercise} />;
         })} */}
       </div>
     </div>
   );
 }
 
-function Exercise({ exercise }: any) {
+function ExerciseFunc({ exercise }: any) {
   const {
     exerciseId,
     name,
