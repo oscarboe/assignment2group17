@@ -1,72 +1,59 @@
-'use client';
-import { useRouter } from 'next/navigation';
-
-const getAccessToken = async (_password: string, _username: string) => {
-  const username = _username;
-  const password = _password;
-
-  try {
-    const response = await fetch(
-      'https://afefitness2023.azurewebsites.net/api/Users/login',
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: username,
-          password: password,
-        }),
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error('Failed to get access token');
-    }
-
-    const tokenData = await response.json();
-    const accessToken = tokenData.jwt;
-
-    // Use the obtained access token in your application
-    console.log('Access Token:', accessToken);
-    return accessToken;
-  } catch (error) {
-    console.error('Error getting access token:', error);
-    alert('Login failed');
-  }
-};
-
-// const router = useRouter();
-
-const handleSubmit = async (event: any) => {
-  event.preventDefault();
-  const formData = new FormData(event.target);
-  const username = formData.get('username')?.toString();
-  const password = formData.get('password')?.toString();
-  if (
-    password != null &&
-    username != null &&
-    password.length > 0 &&
-    username.length > 0
-  ) {
-    const TOKEN = getAccessToken(password, username); //GET THE TOKEN
-    // router.push('TrainerAllExercises');
-    // router.refresh();
-  } else alert('login failed');
-};
+"use client";
+import React, { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import Cookies from "universal-cookie";
 
 export default function LoginPage() {
+  const router = useRouter();
+  const cookies = new Cookies();
+
+  useEffect(() => {
+    cookies.remove("token", { path: "/" });
+  }, []);
+
+  const handleSubmit = async (event: any) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const username = formData.get("username")?.toString() || "";
+    const password = formData.get("password")?.toString() || "";
+
+    if (username && password) {
+      try {
+        const response = await fetch("/api/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username, password }),
+        });
+
+        const data = await response.json();
+
+        if (data.success && data.token) {
+          sessionStorage.setItem("accessToken", data.token);
+          console.log("Login successful");
+          console.log(sessionStorage.getItem("accessToken"));
+          router.push("/"); // Redirect to the new page
+        } else {
+          alert("Login failed: " + data.message);
+        }
+      } catch (error) {
+        alert("Login request failed");
+      }
+    } else {
+      alert("Please enter both username and password");
+    }
+  };
+
   return (
     <form onSubmit={handleSubmit}>
-      <label>
-        Username:
-        <input type='text' name='username' />
-      </label>
-      <label>
-        Password:
-        <input type='password' name='password' />
-      </label>
-      <button type='submit'>Login</button>
+      <div>
+        <label htmlFor="username">Username:</label>
+        <input type="text" id="username" name="username" />
+      </div>
+      <div>
+        <label htmlFor="password">Password:</label>
+        <input type="password" id="password" name="password" />
+      </div>
+      <button type="submit">Login</button>
     </form>
   );
 }
