@@ -7,7 +7,7 @@ const createUser = async (user: User) => {
 
   // Replace 'YOUR_ACCESS_TOKEN' with your actual authorization token
   const accessToken =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJOYW1lIjoiU3VwZXJtYW4iLCJSb2xlIjoiUGVyc29uYWxUcmFpbmVyIiwiVXNlcklkIjoiMiIsIm5iZiI6IjE3MDE2MzAxNDciLCJleHAiOiIxNzAxNzE2NTQ3In0.IXDIIdizeUqFHs_yv4kFQ4lt0MLdxPT1uiAHh3okXmc';
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJOYW1lIjoiU3VwZXJtYW4iLCJSb2xlIjoiUGVyc29uYWxUcmFpbmVyIiwiVXNlcklkIjoiMiIsIm5iZiI6IjE3MDE3ODI0NTUiLCJleHAiOiIxNzAxODY4ODU1In0.ptcjJfzzZShDiUs0-dprvUHny2O7wxoM9XYojNpPsaM';
 
   try {
     const response = await fetch(apiUrl, {
@@ -32,6 +32,7 @@ const createUser = async (user: User) => {
 
     const data = await response.json();
     console.log('Data:', data);
+    alert('New client created');
   } catch (error) {
     console.error('Error posting data:', error);
   }
@@ -74,30 +75,42 @@ export default async function AddClient() {
         <Link href='/personalTrainer'> Back </Link>{' '}
       </h2>
       <form onSubmit={handleSubmit}>
-        <label>
-          userId:
-          <input type='number' name='userId' />
-        </label>
-        <label>
-          firstName:
-          <input type='text' name='firstName' />
-        </label>
-        <label>
-          lastName:
-          <input type='text' name='lastName' />
-        </label>
-        <label>
-          email:
-          <input type='text' name='email' />
-        </label>
-        <label>
-          Password:
-          <input type='password' name='password' />
-        </label>
-        <label>
-          personalTrainerId:
-          <input type='number' name='personalTrainerId' />
-        </label>
+        <li>
+          <label>
+            userId:
+            <input type='number' name='userId' />
+          </label>
+        </li>
+        <li>
+          <label>
+            firstName:
+            <input type='text' name='firstName' />
+          </label>
+        </li>
+        <li>
+          <label>
+            lastName:
+            <input type='text' name='lastName' />
+          </label>
+        </li>
+        <li>
+          <label>
+            email:
+            <input type='text' name='email' />
+          </label>
+        </li>
+        <li>
+          <label>
+            Password:
+            <input type='password' name='password' />
+          </label>
+        </li>
+        <li>
+          <label>
+            personalTrainerId:
+            <input type='number' name='personalTrainerId' />
+          </label>
+        </li>
         <button type='submit'>Create</button>
       </form>
     </div>

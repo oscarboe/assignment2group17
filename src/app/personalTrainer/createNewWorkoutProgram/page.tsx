@@ -7,7 +7,7 @@ const createWorkoutProgram = async (_workoutProgram: workoutProgram) => {
 
   // Replace 'YOUR_ACCESS_TOKEN' with your actual authorization token
   const accessToken =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJOYW1lIjoiU3VwZXJtYW4iLCJSb2xlIjoiUGVyc29uYWxUcmFpbmVyIiwiVXNlcklkIjoiMiIsIm5iZiI6IjE3MDE2MzAxNDciLCJleHAiOiIxNzAxNzE2NTQ3In0.IXDIIdizeUqFHs_yv4kFQ4lt0MLdxPT1uiAHh3okXmc';
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJOYW1lIjoiU3VwZXJtYW4iLCJSb2xlIjoiUGVyc29uYWxUcmFpbmVyIiwiVXNlcklkIjoiMiIsIm5iZiI6IjE3MDE3ODI0NTUiLCJleHAiOiIxNzAxODY4ODU1In0.ptcjJfzzZShDiUs0-dprvUHny2O7wxoM9XYojNpPsaM';
 
   try {
     const response = await fetch(apiUrl, {
@@ -32,6 +32,7 @@ const createWorkoutProgram = async (_workoutProgram: workoutProgram) => {
 
     const data = await response.json();
     console.log('Data:', data);
+    alert('New workout program created');
   } catch (error) {
     console.error('Error posting data:', error);
   }
@@ -88,51 +89,72 @@ export default async function createNewWorkoutProgram() {
         <Link href='/personalTrainer'> Back </Link>{' '}
       </h2>
       <form onSubmit={handleSubmit}>
-        <label>
-          workoutProgramId:
-          <input type='number' name='workoutProgramId' />
-        </label>
-        <label>
-          Workout program name:
-          <input type='text' name='name' />
-        </label>
-        <label>
-          description:
-          <input type='text' name='description' />
-        </label>
-        <label>
-          clientId:
-          <input type='number' name='clientId' />
-        </label>
-        <label>
-          personalTrainerId:
-          <input type='number' name='personalTrainerId' />
-        </label>
-        <label>
-          exerciseId:
-          <input type='number' name='exerciseId' />
-        </label>
-        <label>
-          Exercise name:
-          <input type='text' name='exname' />
-        </label>
-        <label>
-          Exercise description:
-          <input type='text' name='exDescription' />
-        </label>
-        <label>
-          sets:
-          <input type='number' name='sets' />
-        </label>
-        <label>
-          repetitions:
-          <input type='number' name='repetitions' />
-        </label>
-        <label>
-          time:
-          <input type='text' name='time' />
-        </label>
-
+        <li>
+          <label>
+            workoutProgramId:
+            <input type='number' name='workoutProgramId' />
+          </label>
+        </li>
+        <li>
+          <label>
+            Workout program name:
+            <input type='text' name='name' />
+          </label>
+        </li>
+        <li>
+          <label>
+            description:
+            <input type='text' name='description' />
+          </label>
+        </li>
+        <li>
+          <label>
+            clientId:
+            <input type='number' name='clientId' />
+          </label>
+        </li>
+        <li>
+          <label>
+            personalTrainerId:
+            <input type='number' name='personalTrainerId' />
+          </label>
+        </li>
+        <li>
+          <label>
+            exerciseId:
+            <input type='number' name='exerciseId' />
+          </label>
+        </li>
+        <li>
+          <label>
+            Exercise name:
+            <input type='text' name='exname' />
+          </label>
+        </li>
+        <li>
+          <label>
+            Exercise description:
+            <input type='text' name='exDescription' />
+          </label>
+        </li>
+        <li>
+          <label>
+            sets:
+            <input type='number' name='sets' />
+          </label>
+        </li>
+        <li>
+          <label>
+            repetitions:
+            <input type='number' name='repetitions' />
+          </label>
+        </li>
+        <li>
+          <label>
+            time:
+            <input type='text' name='time' />
+          </label>
+        </li>
         <button type='submit'>Create</button>
       </form>
     </div>

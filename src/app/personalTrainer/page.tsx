@@ -38,11 +38,12 @@ const personalTrainer = () => {
 
   useEffect(() => {
     const getUsers = async () => {
-      const apiUrl = 'https://afefitness2023.azurewebsites.net/api/Users';
+      const apiUrl =
+        'https://afefitness2023.azurewebsites.net/api/Users/Clients';
 
       // Replace 'YOUR_ACCESS_TOKEN' with your actual authorization token
       const accessToken =
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJOYW1lIjoiU3VwZXJtYW4iLCJSb2xlIjoiUGVyc29uYWxUcmFpbmVyIiwiVXNlcklkIjoiMiIsIm5iZiI6IjE3MDE2MzAxNDciLCJleHAiOiIxNzAxNzE2NTQ3In0.IXDIIdizeUqFHs_yv4kFQ4lt0MLdxPT1uiAHh3okXmc';
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJOYW1lIjoiU3VwZXJtYW4iLCJSb2xlIjoiUGVyc29uYWxUcmFpbmVyIiwiVXNlcklkIjoiMiIsIm5iZiI6IjE3MDE3ODI0NTUiLCJleHAiOiIxNzAxODY4ODU1In0.ptcjJfzzZShDiUs0-dprvUHny2O7wxoM9XYojNpPsaM';
 
       try {
         const response = await fetch(apiUrl, {
@@ -70,7 +71,7 @@ const personalTrainer = () => {
 
       // Replace 'YOUR_ACCESS_TOKEN' with your actual authorization token
       const accessToken =
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJOYW1lIjoiU3VwZXJtYW4iLCJSb2xlIjoiUGVyc29uYWxUcmFpbmVyIiwiVXNlcklkIjoiMiIsIm5iZiI6IjE3MDE2MzAxNDciLCJleHAiOiIxNzAxNzE2NTQ3In0.IXDIIdizeUqFHs_yv4kFQ4lt0MLdxPT1uiAHh3okXmc';
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJOYW1lIjoiU3VwZXJtYW4iLCJSb2xlIjoiUGVyc29uYWxUcmFpbmVyIiwiVXNlcklkIjoiMiIsIm5iZiI6IjE3MDE3ODI0NTUiLCJleHAiOiIxNzAxODY4ODU1In0.ptcjJfzzZShDiUs0-dprvUHny2O7wxoM9XYojNpPsaM';
 
       try {
         const response = await fetch(apiUrl, {
@@ -104,7 +105,7 @@ const personalTrainer = () => {
     console.log(apiUrl);
     // Replace 'YOUR_ACCESS_TOKEN' with your actual authorization token
     const accessToken =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJOYW1lIjoiU3VwZXJtYW4iLCJSb2xlIjoiUGVyc29uYWxUcmFpbmVyIiwiVXNlcklkIjoiMiIsIm5iZiI6IjE3MDE2MzAxNDciLCJleHAiOiIxNzAxNzE2NTQ3In0.IXDIIdizeUqFHs_yv4kFQ4lt0MLdxPT1uiAHh3okXmc';
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJOYW1lIjoiU3VwZXJtYW4iLCJSb2xlIjoiUGVyc29uYWxUcmFpbmVyIiwiVXNlcklkIjoiMiIsIm5iZiI6IjE3MDE3ODI0NTUiLCJleHAiOiIxNzAxODY4ODU1In0.ptcjJfzzZShDiUs0-dprvUHny2O7wxoM9XYojNpPsaM';
 
     try {
       const response = await fetch(apiUrl, {
@@ -138,6 +139,59 @@ const personalTrainer = () => {
       console.error('Error fetching data:', e);
     }
   };
+  const addExercise = async (exercise: Exercise) => {
+    const apiUrl = new URL(
+      `https://afefitness2023.azurewebsites.net/api/Exercises/Program/${exercise.workoutProgramId}`
+    );
+    console.log(apiUrl);
+    // Replace 'YOUR_ACCESS_TOKEN' with your actual authorization token
+    const accessToken =
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJOYW1lIjoiU3VwZXJtYW4iLCJSb2xlIjoiUGVyc29uYWxUcmFpbmVyIiwiVXNlcklkIjoiMiIsIm5iZiI6IjE3MDE3ODI0NTUiLCJleHAiOiIxNzAxODY4ODU1In0.ptcjJfzzZShDiUs0-dprvUHny2O7wxoM9XYojNpPsaM';
+
+    try {
+      const response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({
+          name: exercise.name,
+          description: exercise.description,
+          sets: exercise.sets,
+          repititions: exercise.repetitions,
+          time: exercise.time,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const data: any = await response.json();
+      console.log('Add Exercise Data:', data);
+      alert('New exercises added to workout program');
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+  const handleSubmitNewExercise = async (event: any) => {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const exercise: Exercise = {
+      exerciseId: 0,
+      name: formData.get('name')?.toString()!,
+      description: formData.get('description')?.toString()!,
+      sets: parseInt(formData?.get('sets')?.toString()!),
+      repetitions: parseInt(formData?.get('reps')?.toString()!),
+      time: formData.get('time')?.toString()!,
+      workoutProgramId: parseInt(
+        formData?.get('workoutProgramId')?.toString()!
+      ),
+      personalTrainerId: 0,
+    };
+    addExercise(exercise);
+  };
   return (
     <div>
       <div>
@@ -156,43 +210,37 @@ const personalTrainer = () => {
             Add workout program{' '}
           </Link>{' '}
         </h2>
-        <h1>Exercises in use:</h1>
-        {/* <div>
-        {users?.map((user: any) => {
-          return <userFunc key={user.userId} users={user} />;
-        })}
-      </div> */}
       </div>
-      <h1>Users List:</h1>
-      <ul>
-        {users.map((user) => (
-          <li key={user.userId}>
-            {user.firstName}
-            {user.lastName}
-            {user.email}
-            {user.personalTrainerId}
+      <h2>Add new exercise to workout program</h2>
+      <form onSubmit={handleSubmitNewExercise}>
+        <ul>
+          <li>
+            <label>Workout Program Id</label>
+            <input type='number' name='workoutProgramId'></input>
           </li>
-        ))}
-      </ul>
-      <h1>Workout program List:</h1>
-      <ul>
-        {workOuts.map((workOut) => (
-          <li key={workOut.workoutProgramId}>
-            {workOut.workoutProgramId}
-            {workOut.name}
-            {workOut.description}
-            {workOut.exercises.map((exercise) => (
-              <li key={exercise.exerciseId}>
-                {exercise.name}
-                {exercise.description}
-                {exercise.sets}
-                {exercise.repetitions}
-                {exercise.time}
-              </li>
-            ))}
+          <li>
+            <label>Name</label>
+            <input type='text' name='name'></input>
           </li>
-        ))}
-      </ul>
+          <li>
+            <label>Description</label>
+            <input type='text' name='description'></input>
+          </li>
+          <li>
+            <label>Sets</label>
+            <input type='number' name='sets'></input>
+          </li>
+          <li>
+            <label>Repition</label>
+            <input type='number' name='reps'></input>
+          </li>
+          <li>
+            <label>Time</label>
+            <input type='text' name='time'></input>
+          </li>
+          <button type='submit'>Add exercise</button>
+        </ul>
+      </form>
       <h1>Specific workout program</h1>
       <form onSubmit={handleSubmit}>
         <label>
@@ -203,18 +251,54 @@ const personalTrainer = () => {
       </form>
       <ul>
         <li key={workOutOnId?.workoutProgramId}>
-          {workOutOnId?.name}
-          {workOutOnId?.description}
-          {workOutOnId?.exercises.map((exercise) => (
-            <li key={exercise.exerciseId}>
-              {exercise.name}
-              {exercise.description}
-              {exercise.sets}
-              {exercise.repetitions}
-              {exercise.time}
-            </li>
-          ))}
+          <h3>{workOutOnId?.name}</h3>
+          <div>{workOutOnId?.description}</div>
+          <ul>
+            {workOutOnId?.exercises.map((exercise) => (
+              <li key={exercise.exerciseId}>
+                <h4>{exercise.name}</h4>
+                <div>Description: {exercise.description}</div>
+                <div>Sets: {exercise.sets}</div>
+                <div>Repitions: {exercise.repetitions}</div>
+                <div>Time: {exercise.time}</div>
+              </li>
+            ))}
+          </ul>
         </li>
+      </ul>
+      <h1>Users List:</h1>
+      <ul>
+        {users.map((user) => (
+          <li key={user.userId}>
+            <h4>
+              {user.firstName} {user.lastName}
+            </h4>
+            <div>{user.email}</div>
+            <div>Id: {user.personalTrainerId}</div>
+          </li>
+        ))}
+      </ul>
+      <h1>Workout program List:</h1>
+      <ul>
+        {workOuts.map((workOut) => (
+          <li key={workOut.workoutProgramId}>
+            <h3>
+              {workOut.name} : {workOut.workoutProgramId}
+            </h3>
+            <div>{workOut.description}</div>
+            <ul>
+              {workOut.exercises.map((exercise) => (
+                <li key={exercise.exerciseId}>
+                  <h4>{exercise.name}</h4>
+                  <div>Description: {exercise.description}</div>
+                  <div>Sets: {exercise.sets}</div>
+                  <div>Repitions: {exercise.repetitions}</div>
+                  <div>Time: {exercise.time}</div>
+                </li>
+              ))}
+            </ul>
+          </li>
+        ))}
       </ul>
     </div>
   );
@@ -222,43 +306,43 @@ const personalTrainer = () => {
 
 export default personalTrainer;
 
-const fpost = async (exerciseData: Exercise) => {
-  const apiUrl = 'https://afefitness2023.azurewebsites.net/api/Exercises';
+// const fpost = async (exerciseData: Exercise) => {
+//   const apiUrl = 'https://afefitness2023.azurewebsites.net/api/Exercises';
 
-  // Replace 'YOUR_ACCESS_TOKEN' with your actual authorization token
-  const accessToken =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJOYW1lIjoiU3VwZXJtYW4iLCJSb2xlIjoiUGVyc29uYWxUcmFpbmVyIiwiVXNlcklkIjoiMiIsIm5iZiI6IjE3MDE2MzAxNDciLCJleHAiOiIxNzAxNzE2NTQ3In0.IXDIIdizeUqFHs_yv4kFQ4lt0MLdxPT1uiAHh3okXmc';
+//   // Replace 'YOUR_ACCESS_TOKEN' with your actual authorization token
+//   const accessToken =
+//     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJOYW1lIjoiU3VwZXJtYW4iLCJSb2xlIjoiUGVyc29uYWxUcmFpbmVyIiwiVXNlcklkIjoiMiIsIm5iZiI6IjE3MDE2MzAxNDciLCJleHAiOiIxNzAxNzE2NTQ3In0.IXDIIdizeUqFHs_yv4kFQ4lt0MLdxPT1uiAHh3okXmc';
 
-  try {
-    const response = await fetch(apiUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${accessToken}`,
-      },
-      body: JSON.stringify({
-        exerciseId: exerciseData.exerciseId,
-        name: exerciseData.name,
-        description: exerciseData.description,
-        sets: exerciseData.sets,
-        repetitions: exerciseData.repetitions,
-        time: exerciseData.time,
-        workoutProgramId: exerciseData.workoutProgramId,
-        personalTrainerId: exerciseData.personalTrainerId,
-      }),
-    });
+//   try {
+//     const response = await fetch(apiUrl, {
+//       method: 'POST',
+//       headers: {
+//         'Content-Type': 'application/json',
+//         Authorization: `Bearer ${accessToken}`,
+//       },
+//       body: JSON.stringify({
+//         exerciseId: exerciseData.exerciseId,
+//         name: exerciseData.name,
+//         description: exerciseData.description,
+//         sets: exerciseData.sets,
+//         repetitions: exerciseData.repetitions,
+//         time: exerciseData.time,
+//         workoutProgramId: exerciseData.workoutProgramId,
+//         personalTrainerId: exerciseData.personalTrainerId,
+//       }),
+//     });
 
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
+//     if (!response.ok) {
+//       throw new Error('Network response was not ok');
+//     }
 
-    const data = await response.json();
-    console.log('Data:', data);
-    return data;
-  } catch (error) {
-    console.error('Error fetching data:', error);
-  }
-};
+//     const data = await response.json();
+//     console.log('Data:', data);
+//     return data;
+//   } catch (error) {
+//     console.error('Error fetching data:', error);
+//   }
+// };
 
 // function userFunc({ user }: any) {
 //   const {
