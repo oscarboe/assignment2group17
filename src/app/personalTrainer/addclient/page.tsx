@@ -1,19 +1,19 @@
-'use client';
-import Link from 'next/link';
-import { User } from '../page';
+"use client";
+import Link from "next/link";
+import { User } from "../page";
+import { useAuth } from "@/hooks/useAuth";
 
 const createUser = async (user: User) => {
-  const apiUrl = 'https://afefitness2023.azurewebsites.net/api/Users';
-
+  const apiUrl = "https://afefitness2023.azurewebsites.net/api/Users";
+  const auth = useAuth();
   // Replace 'YOUR_ACCESS_TOKEN' with your actual authorization token
-  const accessToken =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJOYW1lIjoiU3VwZXJtYW4iLCJSb2xlIjoiUGVyc29uYWxUcmFpbmVyIiwiVXNlcklkIjoiMiIsIm5iZiI6IjE3MDE3ODI0NTUiLCJleHAiOiIxNzAxODY4ODU1In0.ptcjJfzzZShDiUs0-dprvUHny2O7wxoM9XYojNpPsaM';
+  const accessToken = auth.token;
 
   try {
     const response = await fetch(apiUrl, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         Authorization: `Bearer ${accessToken}`,
       },
       body: JSON.stringify({
@@ -22,19 +22,19 @@ const createUser = async (user: User) => {
         email: user.email,
         password: user.password,
         personalTrainerId: user.personalTrainerId,
-        accountType: 'Client',
+        accountType: "Client",
       }),
     });
 
     if (!response.ok) {
-      throw new Error('Network response was not ok');
+      throw new Error("Network response was not ok");
     }
 
     const data = await response.json();
-    console.log('Data:', data);
-    alert('New client created');
+    console.log("Data:", data);
+    alert("New client created");
   } catch (error) {
-    console.error('Error posting data:', error);
+    console.error("Error posting data:", error);
   }
 };
 
@@ -42,13 +42,13 @@ const handleSubmit = async (event: any) => {
   event.preventDefault();
   const formData = new FormData(event.target);
   const user: User = {
-    userId: parseInt(formData?.get('personalTrainerId')?.toString()!),
-    firstName: formData.get('firstName')?.toString()!,
-    lastName: formData.get('lastName')?.toString()!,
-    email: formData.get('email')?.toString()!,
-    password: formData.get('password')?.toString()!,
+    userId: parseInt(formData?.get("personalTrainerId")?.toString()!),
+    firstName: formData.get("firstName")?.toString()!,
+    lastName: formData.get("lastName")?.toString()!,
+    email: formData.get("email")?.toString()!,
+    password: formData.get("password")?.toString()!,
     personalTrainerId: parseInt(
-      formData?.get('personalTrainerId')?.toString()!
+      formData?.get("personalTrainerId")?.toString()!
     ),
   };
   if (
@@ -60,58 +60,58 @@ const handleSubmit = async (event: any) => {
     const TOKEN = createUser(user);
     // router.push('TrainerAllExercises');
     // router.refresh();
-  } else alert('failed creating user');
+  } else alert("failed creating user");
 };
 
 export default async function AddClient() {
   return (
     <div>
       <h2>
-        {' '}
-        <Link href='/'> Home </Link>{' '}
+        {" "}
+        <Link href="/"> Home </Link>{" "}
       </h2>
       <h2>
-        {' '}
-        <Link href='/personalTrainer'> Back </Link>{' '}
+        {" "}
+        <Link href="/personalTrainer"> Back </Link>{" "}
       </h2>
       <form onSubmit={handleSubmit}>
         <li>
           <label>
             userId:
-            <input type='number' name='userId' />
+            <input type="number" name="userId" />
           </label>
         </li>
         <li>
           <label>
             firstName:
-            <input type='text' name='firstName' />
+            <input type="text" name="firstName" />
           </label>
         </li>
         <li>
           <label>
             lastName:
-            <input type='text' name='lastName' />
+            <input type="text" name="lastName" />
           </label>
         </li>
         <li>
           <label>
             email:
-            <input type='text' name='email' />
+            <input type="text" name="email" />
           </label>
         </li>
         <li>
           <label>
             Password:
-            <input type='password' name='password' />
+            <input type="password" name="password" />
           </label>
         </li>
         <li>
           <label>
             personalTrainerId:
-            <input type='number' name='personalTrainerId' />
+            <input type="number" name="personalTrainerId" />
           </label>
         </li>
-        <button type='submit'>Create</button>
+        <button type="submit">Create</button>
       </form>
     </div>
   );

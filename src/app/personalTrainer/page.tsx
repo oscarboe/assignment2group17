@@ -1,6 +1,7 @@
-'use client';
-import Link from 'next/link';
-import { useEffect, useState } from 'react';
+"use client";
+import { useAuth } from "@/hooks/useAuth";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 
 export type Exercise = {
   exerciseId: number;
@@ -35,62 +36,60 @@ const personalTrainer = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [workOuts, setWorkOuts] = useState<workoutProgram[]>([]);
   const [workOutOnId, setWorkOutOnId] = useState<workoutProgram>();
+  const auth = useAuth();
 
   useEffect(() => {
     const getUsers = async () => {
       const apiUrl =
-        'https://afefitness2023.azurewebsites.net/api/Users/Clients';
+        "https://afefitness2023.azurewebsites.net/api/Users/Clients";
 
       // Replace 'YOUR_ACCESS_TOKEN' with your actual authorization token
-      const accessToken =
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJOYW1lIjoiU3VwZXJtYW4iLCJSb2xlIjoiUGVyc29uYWxUcmFpbmVyIiwiVXNlcklkIjoiMiIsIm5iZiI6IjE3MDE3ODI0NTUiLCJleHAiOiIxNzAxODY4ODU1In0.ptcjJfzzZShDiUs0-dprvUHny2O7wxoM9XYojNpPsaM';
+      const accessToken = auth.token;
 
       try {
         const response = await fetch(apiUrl, {
-          method: 'GET',
+          method: "GET",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
             Authorization: `Bearer ${accessToken}`,
           },
         });
 
         if (!response.ok) {
-          throw new Error('Network response was not ok');
+          throw new Error("Network response was not ok");
         }
 
         const data: any = await response.json();
-        console.log('Client Data:', data);
+        console.log("Client Data:", data);
         setUsers(data);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
       }
     };
     const getWorkOuts = async () => {
       const apiUrl =
-        'https://afefitness2023.azurewebsites.net/api/WorkoutPrograms';
+        "https://afefitness2023.azurewebsites.net/api/WorkoutPrograms";
 
-      // Replace 'YOUR_ACCESS_TOKEN' with your actual authorization token
-      const accessToken =
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJOYW1lIjoiU3VwZXJtYW4iLCJSb2xlIjoiUGVyc29uYWxUcmFpbmVyIiwiVXNlcklkIjoiMiIsIm5iZiI6IjE3MDE3ODI0NTUiLCJleHAiOiIxNzAxODY4ODU1In0.ptcjJfzzZShDiUs0-dprvUHny2O7wxoM9XYojNpPsaM';
+      const accessToken = auth.token;
 
       try {
         const response = await fetch(apiUrl, {
-          method: 'GET',
+          method: "GET",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
             Authorization: `Bearer ${accessToken}`,
           },
         });
 
         if (!response.ok) {
-          throw new Error('Network response was not ok');
+          throw new Error("Network response was not ok");
         }
 
         const data: any = await response.json();
-        console.log('Workout Data:', data);
+        console.log("Workout Data:", data);
         setWorkOuts(data);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
       }
     };
 
@@ -103,56 +102,53 @@ const personalTrainer = () => {
       `https://afefitness2023.azurewebsites.net/api/WorkoutPrograms/${workoutProgramId}`
     );
     console.log(apiUrl);
-    // Replace 'YOUR_ACCESS_TOKEN' with your actual authorization token
-    const accessToken =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJOYW1lIjoiU3VwZXJtYW4iLCJSb2xlIjoiUGVyc29uYWxUcmFpbmVyIiwiVXNlcklkIjoiMiIsIm5iZiI6IjE3MDE3ODI0NTUiLCJleHAiOiIxNzAxODY4ODU1In0.ptcjJfzzZShDiUs0-dprvUHny2O7wxoM9XYojNpPsaM';
+
+    const accessToken = auth.token;
 
     try {
       const response = await fetch(apiUrl, {
-        method: 'GET',
+        method: "GET",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           Authorization: `Bearer ${accessToken}`,
         },
       });
 
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        throw new Error("Network response was not ok");
       }
 
       const data: any = await response.json();
-      console.log('Workout Data:', data);
+      console.log("Workout Data:", data);
       setWorkOutOnId(data);
     } catch (error) {
-      console.error('Error fetching data:', error);
+      console.error("Error fetching data:", error);
     }
   };
   const handleSubmit = async (event: any) => {
     event.preventDefault();
     const formData = new FormData(event.target);
     const workoutProgramId = parseInt(
-      formData?.get('workoutProgramId')?.toString()!
+      formData?.get("workoutProgramId")?.toString()!
     );
     try {
       await getWorkOutOnId(workoutProgramId);
     } catch (e) {
-      console.error('Error fetching data:', e);
+      console.error("Error fetching data:", e);
     }
   };
   const addExercise = async (exercise: Exercise) => {
     const apiUrl = new URL(
       `https://afefitness2023.azurewebsites.net/api/Exercises/Program/${exercise.workoutProgramId}`
     );
-    console.log(apiUrl);
-    // Replace 'YOUR_ACCESS_TOKEN' with your actual authorization token
-    const accessToken =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJOYW1lIjoiU3VwZXJtYW4iLCJSb2xlIjoiUGVyc29uYWxUcmFpbmVyIiwiVXNlcklkIjoiMiIsIm5iZiI6IjE3MDE3ODI0NTUiLCJleHAiOiIxNzAxODY4ODU1In0.ptcjJfzzZShDiUs0-dprvUHny2O7wxoM9XYojNpPsaM';
+
+    const accessToken = auth.token;
 
     try {
       const response = await fetch(apiUrl, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           Authorization: `Bearer ${accessToken}`,
         },
         body: JSON.stringify({
@@ -165,14 +161,14 @@ const personalTrainer = () => {
       });
 
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        throw new Error("Network response was not ok");
       }
 
       const data: any = await response.json();
-      console.log('Add Exercise Data:', data);
-      alert('New exercises added to workout program');
+      console.log("Add Exercise Data:", data);
+      alert("New exercises added to workout program");
     } catch (error) {
-      console.error('Error fetching data:', error);
+      console.error("Error fetching data:", error);
     }
   };
   const handleSubmitNewExercise = async (event: any) => {
@@ -180,13 +176,13 @@ const personalTrainer = () => {
     const formData = new FormData(event.target);
     const exercise: Exercise = {
       exerciseId: 0,
-      name: formData.get('name')?.toString()!,
-      description: formData.get('description')?.toString()!,
-      sets: parseInt(formData?.get('sets')?.toString()!),
-      repetitions: parseInt(formData?.get('reps')?.toString()!),
-      time: formData.get('time')?.toString()!,
+      name: formData.get("name")?.toString()!,
+      description: formData.get("description")?.toString()!,
+      sets: parseInt(formData?.get("sets")?.toString()!),
+      repetitions: parseInt(formData?.get("reps")?.toString()!),
+      time: formData.get("time")?.toString()!,
       workoutProgramId: parseInt(
-        formData?.get('workoutProgramId')?.toString()!
+        formData?.get("workoutProgramId")?.toString()!
       ),
       personalTrainerId: 0,
     };
@@ -196,19 +192,19 @@ const personalTrainer = () => {
     <div>
       <div>
         <h2>
-          {' '}
-          <Link href='/'> Home </Link>{' '}
+          {" "}
+          <Link href="/"> Home </Link>{" "}
         </h2>
         <h2>
-          {' '}
-          <Link href='/personalTrainer/addclient'> Add client </Link>{' '}
+          {" "}
+          <Link href="/personalTrainer/addclient"> Add client </Link>{" "}
         </h2>
         <h2>
-          {' '}
-          <Link href='/personalTrainer/createNewWorkoutProgram'>
-            {' '}
-            Add workout program{' '}
-          </Link>{' '}
+          {" "}
+          <Link href="/personalTrainer/createNewWorkoutProgram">
+            {" "}
+            Add workout program{" "}
+          </Link>{" "}
         </h2>
       </div>
       <h2>Add new exercise to workout program</h2>
@@ -216,38 +212,38 @@ const personalTrainer = () => {
         <ul>
           <li>
             <label>Workout Program Id</label>
-            <input type='number' name='workoutProgramId'></input>
+            <input type="number" name="workoutProgramId"></input>
           </li>
           <li>
             <label>Name</label>
-            <input type='text' name='name'></input>
+            <input type="text" name="name"></input>
           </li>
           <li>
             <label>Description</label>
-            <input type='text' name='description'></input>
+            <input type="text" name="description"></input>
           </li>
           <li>
             <label>Sets</label>
-            <input type='number' name='sets'></input>
+            <input type="number" name="sets"></input>
           </li>
           <li>
             <label>Repition</label>
-            <input type='number' name='reps'></input>
+            <input type="number" name="reps"></input>
           </li>
           <li>
             <label>Time</label>
-            <input type='text' name='time'></input>
+            <input type="text" name="time"></input>
           </li>
-          <button type='submit'>Add exercise</button>
+          <button type="submit">Add exercise</button>
         </ul>
       </form>
       <h1>Specific workout program</h1>
       <form onSubmit={handleSubmit}>
         <label>
           workoutProgramId:
-          <input type='number' name='workoutProgramId' />
+          <input type="number" name="workoutProgramId" />
         </label>
-        <button type='submit'>See workout program</button>
+        <button type="submit">See workout program</button>
       </form>
       <ul>
         <li key={workOutOnId?.workoutProgramId}>
