@@ -1,40 +1,44 @@
-"use client";
+'use client';
 
-import { useAuth } from "@/hooks/useAuth";
-import Link from "next/link";
-import React from "react";
-import Cookies from "universal-cookie";
+import { useAuth } from '@/hooks/useAuth';
+import Link from 'next/link';
+import React from 'react';
+import Cookies from 'universal-cookie';
 
 export default function Home() {
   const auth = useAuth();
 
   const linkStyle = {
-    marginRight: "10px",
-    textDecoration: "none",
-    color: "blue",
-    cursor: "pointer",
+    marginRight: '10px',
+    textDecoration: 'none',
+    color: 'blue',
+    cursor: 'pointer',
   };
 
   const navStyle = {
-    marginBottom: "20px",
+    marginBottom: '20px',
   };
 
   const renderLinks = () => {
     if (auth.token) {
       switch (auth.role) {
-        case "PersonalTrainer":
+        case 'PersonalTrainer':
           return (
             <>
-              <Link href="/create-client" style={linkStyle}>
+              <Link href='/personalTrainer' style={linkStyle}>
+                List Page
+              </Link>
+              <Link href='personalTrainer/addclient' style={linkStyle}>
                 Create Client
               </Link>
-              <Link href="/create-workout-program" style={linkStyle}>
+              <Link
+                href='/personalTrainer/createNewWorkoutProgram'
+                style={linkStyle}
+              >
                 Create Workout Program
               </Link>
-              <Link href="/add-exercise" style={linkStyle}>
-                Add Exercises to Workout Program
-              </Link>
-              <Link href="/list-workout-programs" style={linkStyle}>
+
+              {/* <Link href="/list-workout-programs" style={linkStyle}>
                 List of Workout Programs
               </Link>
               <Link href="/view-workout-program" style={linkStyle}>
@@ -42,18 +46,18 @@ export default function Home() {
               </Link>
               <Link href="/list-clients" style={linkStyle}>
                 List of Clients
-              </Link>
+              </Link> */}
             </>
           );
-        case "Manager":
+        case 'Manager':
           return (
-            <Link href="/create-personal-trainer" style={linkStyle}>
+            <Link href='/create-personal-trainer' style={linkStyle}>
               Create personal trainers
             </Link>
           );
-        case "Client":
+        case 'Client':
           return (
-            <Link href="/view-workout-program" style={linkStyle}>
+            <Link href='/view-workout-program' style={linkStyle}>
               See workout program
             </Link>
           );
@@ -62,7 +66,7 @@ export default function Home() {
       }
     } else {
       return (
-        <Link href="/Login" style={linkStyle}>
+        <Link href='/Login' style={linkStyle}>
           Login
         </Link>
       );
@@ -71,12 +75,12 @@ export default function Home() {
 
   return (
     <>
-      <h1>{auth.token ? `Welcome ${auth.role}` : "Welcome Guest"}</h1>
+      <h1>{auth.token ? `Welcome ${auth.role}` : 'Welcome Guest'}</h1>
       <header>
         <nav style={navStyle}>
           {renderLinks()}
           {auth.token && (
-            <Link href="/Login" style={linkStyle}>
+            <Link href='/Login' style={linkStyle}>
               Logout
             </Link>
           )}

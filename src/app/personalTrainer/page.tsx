@@ -1,7 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-
+import { useAuth } from '../../hooks/useAuth/index';
 export type Exercise = {
   exerciseId: number;
   name: string;
