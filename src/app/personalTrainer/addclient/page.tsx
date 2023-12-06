@@ -6,8 +6,7 @@ const createUser = async (user: User) => {
   const apiUrl = 'https://afefitness2023.azurewebsites.net/api/Users';
 
   // Replace 'YOUR_ACCESS_TOKEN' with your actual authorization token
-  const accessToken =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJOYW1lIjoiU3VwZXJtYW4iLCJSb2xlIjoiUGVyc29uYWxUcmFpbmVyIiwiVXNlcklkIjoiMiIsIm5iZiI6IjE3MDE3ODI0NTUiLCJleHAiOiIxNzAxODY4ODU1In0.ptcjJfzzZShDiUs0-dprvUHny2O7wxoM9XYojNpPsaM';
+  const accessToken = auth.token;
 
   try {
     const response = await fetch(apiUrl, {

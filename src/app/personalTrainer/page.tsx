@@ -35,6 +35,7 @@ const personalTrainer = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [workOuts, setWorkOuts] = useState<workoutProgram[]>([]);
   const [workOutOnId, setWorkOutOnId] = useState<workoutProgram>();
+  const auth = useAuth();
 
   useEffect(() => {
     const getUsers = async () => {
@@ -42,8 +43,7 @@ const personalTrainer = () => {
         'https://afefitness2023.azurewebsites.net/api/Users/Clients';
 
       // Replace 'YOUR_ACCESS_TOKEN' with your actual authorization token
-      const accessToken =
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJOYW1lIjoiU3VwZXJtYW4iLCJSb2xlIjoiUGVyc29uYWxUcmFpbmVyIiwiVXNlcklkIjoiMiIsIm5iZiI6IjE3MDE3ODI0NTUiLCJleHAiOiIxNzAxODY4ODU1In0.ptcjJfzzZShDiUs0-dprvUHny2O7wxoM9XYojNpPsaM';
+      const accessToken = auth.token;
 
       try {
         const response = await fetch(apiUrl, {
@@ -69,9 +69,7 @@ const personalTrainer = () => {
       const apiUrl =
         'https://afefitness2023.azurewebsites.net/api/WorkoutPrograms';
 
-      // Replace 'YOUR_ACCESS_TOKEN' with your actual authorization token
-      const accessToken =
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJOYW1lIjoiU3VwZXJtYW4iLCJSb2xlIjoiUGVyc29uYWxUcmFpbmVyIiwiVXNlcklkIjoiMiIsIm5iZiI6IjE3MDE3ODI0NTUiLCJleHAiOiIxNzAxODY4ODU1In0.ptcjJfzzZShDiUs0-dprvUHny2O7wxoM9XYojNpPsaM';
+      const accessToken = auth.token;
 
       try {
         const response = await fetch(apiUrl, {
@@ -103,9 +101,8 @@ const personalTrainer = () => {
       `https://afefitness2023.azurewebsites.net/api/WorkoutPrograms/${workoutProgramId}`
     );
     console.log(apiUrl);
-    // Replace 'YOUR_ACCESS_TOKEN' with your actual authorization token
-    const accessToken =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJOYW1lIjoiU3VwZXJtYW4iLCJSb2xlIjoiUGVyc29uYWxUcmFpbmVyIiwiVXNlcklkIjoiMiIsIm5iZiI6IjE3MDE3ODI0NTUiLCJleHAiOiIxNzAxODY4ODU1In0.ptcjJfzzZShDiUs0-dprvUHny2O7wxoM9XYojNpPsaM';
+
+    const accessToken = auth.token;
 
     try {
       const response = await fetch(apiUrl, {
@@ -143,10 +140,8 @@ const personalTrainer = () => {
     const apiUrl = new URL(
       `https://afefitness2023.azurewebsites.net/api/Exercises/Program/${exercise.workoutProgramId}`
     );
-    console.log(apiUrl);
-    // Replace 'YOUR_ACCESS_TOKEN' with your actual authorization token
-    const accessToken =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJOYW1lIjoiU3VwZXJtYW4iLCJSb2xlIjoiUGVyc29uYWxUcmFpbmVyIiwiVXNlcklkIjoiMiIsIm5iZiI6IjE3MDE3ODI0NTUiLCJleHAiOiIxNzAxODY4ODU1In0.ptcjJfzzZShDiUs0-dprvUHny2O7wxoM9XYojNpPsaM';
+
+    const accessToken = auth.token;
 
     try {
       const response = await fetch(apiUrl, {
