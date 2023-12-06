@@ -4,11 +4,13 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Exercise } from './page';
 import { workoutProgram } from './page';
+import { useAuth } from '@/hooks/useAuth';
 
 const workOutProgram = () => {
   const [workOuts, setWorkOuts] = useState<workoutProgram[]>([]);
   const router = useRouter();
   const { workoutProgram } = router.query;
+  const auth = useAuth();
 
   useEffect(() => {
     const getWorkOuts = async () => {
@@ -16,8 +18,7 @@ const workOutProgram = () => {
         'https://afefitness2023.azurewebsites.net/api/WorkoutPrograms/${workoutProgram}';
 
       // Replace 'YOUR_ACCESS_TOKEN' with your actual authorization token
-      const accessToken =
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJOYW1lIjoiU3VwZXJtYW4iLCJSb2xlIjoiUGVyc29uYWxUcmFpbmVyIiwiVXNlcklkIjoiMiIsIm5iZiI6IjE3MDE3ODI0NTUiLCJleHAiOiIxNzAxODY4ODU1In0.ptcjJfzzZShDiUs0-dprvUHny2O7wxoM9XYojNpPsaM';
+      const accessToken = auth.token;
 
       try {
         const response = await fetch(apiUrl, {

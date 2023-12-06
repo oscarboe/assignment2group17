@@ -1,11 +1,12 @@
 'use client';
 import Link from 'next/link';
 import { User } from '../page';
+import { useAuth } from '@/hooks/useAuth';
 
 const createUser = async (user: User) => {
+  const auth = useAuth();
   const apiUrl = 'https://afefitness2023.azurewebsites.net/api/Users';
 
-  // Replace 'YOUR_ACCESS_TOKEN' with your actual authorization token
   const accessToken = auth.token;
 
   try {

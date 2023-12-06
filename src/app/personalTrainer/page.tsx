@@ -1,7 +1,7 @@
 'use client';
+import { useAuth } from '@/hooks/useAuth';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { useAuth } from '../../hooks/useAuth/index';
 export type Exercise = {
   exerciseId: number;
   name: string;
@@ -35,16 +35,16 @@ const personalTrainer = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [workOuts, setWorkOuts] = useState<workoutProgram[]>([]);
   const [workOutOnId, setWorkOutOnId] = useState<workoutProgram>();
-  const auth = useAuth();
+  const [token, setToken] = useState<string>();
 
   useEffect(() => {
     const getUsers = async () => {
+      const auth = useAuth();
       const apiUrl =
         'https://afefitness2023.azurewebsites.net/api/Users/Clients';
 
-      // Replace 'YOUR_ACCESS_TOKEN' with your actual authorization token
       const accessToken = auth.token;
-
+      console.log('halløj', accessToken);
       try {
         const response = await fetch(apiUrl, {
           method: 'GET',
@@ -68,7 +68,7 @@ const personalTrainer = () => {
     const getWorkOuts = async () => {
       const apiUrl =
         'https://afefitness2023.azurewebsites.net/api/WorkoutPrograms';
-
+      const auth = useAuth();
       const accessToken = auth.token;
 
       try {
@@ -91,7 +91,6 @@ const personalTrainer = () => {
         console.error('Error fetching data:', error);
       }
     };
-
     getUsers();
     getWorkOuts();
   }, []);
@@ -102,7 +101,7 @@ const personalTrainer = () => {
     );
     console.log(apiUrl);
 
-    const accessToken = auth.token;
+    const accessToken = token;
 
     try {
       const response = await fetch(apiUrl, {
@@ -141,7 +140,7 @@ const personalTrainer = () => {
       `https://afefitness2023.azurewebsites.net/api/Exercises/Program/${exercise.workoutProgramId}`
     );
 
-    const accessToken = auth.token;
+    const accessToken = token;
 
     try {
       const response = await fetch(apiUrl, {
