@@ -26,37 +26,38 @@ export type workoutProgram = {
 const client = () => {
   const [workOuts, setWorkOuts] = useState<workoutProgram[]>([]);
   const auth = useAuth();
-  useEffect(() => {
-    const getWorkOuts = async () => {
-      const apiUrl =
-        'https://afefitness2023.azurewebsites.net/api/WorkoutPrograms';
 
-      // Replace 'YOUR_ACCESS_TOKEN' with your actual authorization token
-      const accessToken = auth.token;
+  const getWorkOuts = async () => {
+    const apiUrl =
+      'https://afefitness2023.azurewebsites.net/api/WorkoutPrograms';
 
-      try {
-        const response = await fetch(apiUrl, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${accessToken}`,
-          },
-        });
+    // Replace 'YOUR_ACCESS_TOKEN' with your actual authorization token
+    const accessToken = auth.token;
 
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
+    try {
+      const response = await fetch(apiUrl, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
 
-        const data: any = await response.json();
-        console.log('Workout Data:', data);
-        setWorkOuts(data);
-      } catch (error) {
-        console.error('Error fetching data:', error);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
       }
-    };
 
+      const data: any = await response.json();
+      console.log('Workout Data:', data);
+      setWorkOuts(data);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
+  useEffect(() => {
     getWorkOuts();
-  }, []);
+  }, [auth]);
   return (
     <div>
       <h1>Workout program List:</h1>
@@ -67,7 +68,8 @@ const client = () => {
               {workOut.name} :{' '}
               <Link
                 href={{
-                  pathname: '/view-workout-program/${workOut.workoutProgramId}',
+                  pathname: '/view-workout-program/workout-program',
+                  query: { workOut: JSON.stringify(workOut) },
                 }}
               >
                 {workOut.workoutProgramId}

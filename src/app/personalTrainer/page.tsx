@@ -32,14 +32,13 @@ export type workoutProgram = {
 };
 
 const personalTrainer = () => {
+  const auth = useAuth();
   const [users, setUsers] = useState<User[]>([]);
   const [workOuts, setWorkOuts] = useState<workoutProgram[]>([]);
   const [workOutOnId, setWorkOutOnId] = useState<workoutProgram>();
-  const [token, setToken] = useState<string>();
 
   useEffect(() => {
     const getUsers = async () => {
-      const auth = useAuth();
       const apiUrl =
         'https://afefitness2023.azurewebsites.net/api/Users/Clients';
 
@@ -68,7 +67,7 @@ const personalTrainer = () => {
     const getWorkOuts = async () => {
       const apiUrl =
         'https://afefitness2023.azurewebsites.net/api/WorkoutPrograms';
-      const auth = useAuth();
+
       const accessToken = auth.token;
 
       try {
@@ -93,7 +92,7 @@ const personalTrainer = () => {
     };
     getUsers();
     getWorkOuts();
-  }, []);
+  }, [auth.token]);
 
   const getWorkOutOnId = async (workoutProgramId: number) => {
     const apiUrl = new URL(
@@ -101,7 +100,7 @@ const personalTrainer = () => {
     );
     console.log(apiUrl);
 
-    const accessToken = token;
+    const accessToken = auth.token;
 
     try {
       const response = await fetch(apiUrl, {
@@ -140,7 +139,7 @@ const personalTrainer = () => {
       `https://afefitness2023.azurewebsites.net/api/Exercises/Program/${exercise.workoutProgramId}`
     );
 
-    const accessToken = token;
+    const accessToken = auth.token;
 
     try {
       const response = await fetch(apiUrl, {
@@ -268,7 +267,7 @@ const personalTrainer = () => {
               {user.firstName} {user.lastName}
             </h4>
             <div>{user.email}</div>
-            <div>Id: {user.personalTrainerId}</div>
+            <div>Id: {user.userId}</div>
           </li>
         ))}
       </ul>
@@ -297,98 +296,4 @@ const personalTrainer = () => {
     </div>
   );
 };
-
 export default personalTrainer;
-
-// const fpost = async (exerciseData: Exercise) => {
-//   const apiUrl = 'https://afefitness2023.azurewebsites.net/api/Exercises';
-
-//   // Replace 'YOUR_ACCESS_TOKEN' with your actual authorization token
-//   const accessToken =
-//     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJOYW1lIjoiU3VwZXJtYW4iLCJSb2xlIjoiUGVyc29uYWxUcmFpbmVyIiwiVXNlcklkIjoiMiIsIm5iZiI6IjE3MDE2MzAxNDciLCJleHAiOiIxNzAxNzE2NTQ3In0.IXDIIdizeUqFHs_yv4kFQ4lt0MLdxPT1uiAHh3okXmc';
-
-//   try {
-//     const response = await fetch(apiUrl, {
-//       method: 'POST',
-//       headers: {
-//         'Content-Type': 'application/json',
-//         Authorization: `Bearer ${accessToken}`,
-//       },
-//       body: JSON.stringify({
-//         exerciseId: exerciseData.exerciseId,
-//         name: exerciseData.name,
-//         description: exerciseData.description,
-//         sets: exerciseData.sets,
-//         repetitions: exerciseData.repetitions,
-//         time: exerciseData.time,
-//         workoutProgramId: exerciseData.workoutProgramId,
-//         personalTrainerId: exerciseData.personalTrainerId,
-//       }),
-//     });
-
-//     if (!response.ok) {
-//       throw new Error('Network response was not ok');
-//     }
-
-//     const data = await response.json();
-//     console.log('Data:', data);
-//     return data;
-//   } catch (error) {
-//     console.error('Error fetching data:', error);
-//   }
-// };
-
-// function userFunc({ user }: any) {
-//   const {
-//     userId,
-//     firstName,
-//     lastName,
-//     email,
-//     password,
-//     personalTrainerId,
-//     accountType,
-//   } = user || {};
-//   return (
-//     <Link href={'/exercises/${id}'}>
-//       <div>
-//         <h2>{userId}</h2>
-//         <h5>{firstName}</h5>
-//         <h5>{lastName}</h5>
-//         <h5>{email}</h5>
-//         <h5>{password}</h5>
-//         <h5>{accountType}</h5>
-//         <h5>{personalTrainerId}</h5>
-//       </div>
-//     </Link>
-//   );
-// }
-
-// export default async function TrainerPage() {
-//   const users: any = await getUsers();
-//   // console.log(exercisesUsed);
-//   return (
-//     <div>
-//       <h2>
-//         {' '}
-//         <Link href='/'> Home </Link>{' '}
-//       </h2>
-//       <h2>
-//         {' '}
-//         <Link href='/personalTrainer/addclient'> Add client </Link>{' '}
-//       </h2>
-//       <h2>
-//         {' '}
-//         <Link href='/personalTrainer/createNewWorkoutProgram'>
-//           {' '}
-//           Add workout program{' '}
-//         </Link>{' '}
-//       </h2>
-//       <h1>Exercises in use:</h1>
-//       <div>
-//         {users?.map((user: any) => {
-//           return <userFunc key={user.userId} users={user} />;
-//         })}
-//       </div>
-//     </div>
-//   );
-// }
