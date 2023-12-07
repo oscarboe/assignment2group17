@@ -2,16 +2,13 @@
 import Link from 'next/link';
 import { User } from '../personalTrainer/page';
 import { useAuth } from '@/hooks/useAuth';
-import { useState } from 'react';
 
 const AddClient = () => {
-  const [token, setToken] = useState<string>();
   const auth = useAuth();
 
   const createUser = async (user: User, accountType: string) => {
-    setToken(auth.token!);
     const apiUrl = 'https://afefitness2023.azurewebsites.net/api/Users';
-    const accessToken = token;
+    const accessToken = auth.token;
 
     try {
       const response = await fetch(apiUrl, {
@@ -57,10 +54,12 @@ const AddClient = () => {
     };
     const accountType = formData.get('accountType')?.toString()!;
     if (
-      user.password != null &&
-      user.email != null &&
       user.password.length > 0 &&
-      user.email.length > 0
+      user.email.length > 0 &&
+      user.firstName.length > 0 &&
+      user.lastName.length > 0 &&
+      user.personalTrainerId >= 0 &&
+      (accountType == 'PersonalTrainer' || accountType == 'Client')
     ) {
       createUser(user, accountType);
       // router.push('TrainerAllExercises');
