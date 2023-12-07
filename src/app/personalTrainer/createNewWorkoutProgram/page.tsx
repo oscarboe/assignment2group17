@@ -2,14 +2,11 @@
 import Link from 'next/link';
 import { Exercise, workoutProgram } from '../page';
 import { useAuth } from '@/hooks/useAuth';
-import { useEffect, useState } from 'react';
 
 const createNewWorkoutProgram = () => {
-  const [token, setToken] = useState<string>();
   const auth = useAuth();
 
   const createWorkoutProgram = async (_workoutProgram: workoutProgram) => {
-    setToken(auth.token!);
     const apiUrl =
       'https://afefitness2023.azurewebsites.net/api/WorkoutPrograms';
 
