@@ -53,10 +53,11 @@ const AddClient = () => {
       ),
     };
     if (
-      user.password != null &&
-      user.email != null &&
       user.password.length > 0 &&
-      user.email.length > 0
+      user.email.length > 0 &&
+      user.firstName.length > 0 &&
+      user.lastName.length > 0 &&
+      user.personalTrainerId >= 0
     ) {
       createUser(user);
       // router.push('TrainerAllExercises');

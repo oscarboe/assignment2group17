@@ -80,8 +80,15 @@ const createNewWorkoutProgram = () => {
       clientId: parseInt(formData?.get('clientId')?.toString()!),
     };
     if (
+      _workoutProgram.clientId >= 0 &&
+      _workoutProgram.description.length > 0 &&
+      _workoutProgram.name!.length > 0 &&
       _workoutProgram.exercises != null &&
-      _workoutProgram.exercises[0].name.length > 0
+      _workoutProgram.exercises[0].name.length > 0 &&
+      _workoutProgram.exercises[0].description.length > 0 &&
+      _workoutProgram.exercises[0].sets >= 0 &&
+      _workoutProgram.exercises[0].repetitions >= 0 &&
+      _workoutProgram.exercises[0].time.length > 0
     ) {
       createWorkoutProgram(_workoutProgram);
       // router.push('TrainerAllExercises');

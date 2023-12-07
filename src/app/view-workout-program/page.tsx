@@ -60,6 +60,10 @@ const client = () => {
   }, [auth]);
   return (
     <div>
+      <h2>
+        {' '}
+        <Link href='/'> Home </Link>{' '}
+      </h2>
       <h1>Workout program List:</h1>
       <ul>
         {workOuts.map((workOut) => (
