@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { Exercise, workoutProgram } from '../page';
 import { useAuth } from '@/hooks/useAuth';
 
-const createNewWorkoutProgram = () => {
+const CreateNewWorkoutProgram = () => {
   const auth = useAuth();
 
   const createWorkoutProgram = async (_workoutProgram: workoutProgram) => {
@@ -156,4 +156,4 @@ const createNewWorkoutProgram = () => {
     </div>
   );
 };
-export default createNewWorkoutProgram;
+export default CreateNewWorkoutProgram;

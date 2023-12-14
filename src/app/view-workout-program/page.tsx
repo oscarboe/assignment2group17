@@ -14,7 +14,7 @@ export type Exercise = {
   personalTrainerId: number;
 };
 
-export type workoutProgram = {
+export type WorkoutProgram = {
   workoutProgramId?: number;
   name?: string;
   description: string;
@@ -23,8 +23,8 @@ export type workoutProgram = {
   clientId: number;
 };
 
-const client = () => {
-  const [workOuts, setWorkOuts] = useState<workoutProgram[]>([]);
+const Client = () => {
+  const [workOuts, setWorkOuts] = useState<WorkoutProgram[]>([]);
   const auth = useAuth();
 
   const getWorkOuts = async () => {
@@ -98,4 +98,4 @@ const client = () => {
   );
 };
 
-export default client;
+export default Client;

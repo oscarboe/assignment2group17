@@ -31,7 +31,7 @@ export type workoutProgram = {
   clientId: number;
 };
 
-const personalTrainer = () => {
+const PersonalTrainer = () => {
   const auth = useAuth();
   const [users, setUsers] = useState<User[]>([]);
   const [workOuts, setWorkOuts] = useState<workoutProgram[]>([]);
@@ -296,4 +296,4 @@ const personalTrainer = () => {
     </div>
   );
 };
-export default personalTrainer;
+export default PersonalTrainer;

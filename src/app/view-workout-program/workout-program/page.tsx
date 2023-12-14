@@ -3,9 +3,8 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Exercise } from '../page';
-import { workoutProgram } from '../page';
 import { useSearchParams } from 'next/navigation';
-const workOutProgram = () => {
+const WorkOutProgram = () => {
   const searchParams = useSearchParams();
   const workOutSearch = searchParams.get('workOut');
   const workOut = JSON.parse(workOutSearch!);
@@ -41,4 +40,4 @@ const workOutProgram = () => {
   );
 };
 
-export default workOutProgram;
+export default WorkOutProgram;
